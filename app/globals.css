@@ -1,26 +1,57 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: 0 0% 100%;
+  --foreground: 222.2 84% 4.9%;
+  --card: 0 0% 100%;
+  --card-foreground: 222.2 84% 4.9%;
+  --primary: 222.2 47.4% 11.2%;
+  --primary-foreground: 210 40% 98%;
+  --border: 214.3 31.8% 91.4%;
+  --accent: 210 40% 96%;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+.dark {
+  --background: 222.2 84% 4.9%;
+  --foreground: 210 40% 98%;
+  --card: 222.2 84% 4.9%;
+  --card-foreground: 210 40% 98%;
+  --primary: 210 40% 98%;
+  --primary-foreground: 222.2 47.4% 11.2%;
+  --border: 217.2 32.6% 17.5%;
+  --accent: 217.2 32.6% 17.5%;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Tenant-specific themes */
+.tenant-acme {
+  --primary: 0 84% 60%;
+  /* Reddish for Acme */
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+.tenant-stripe {
+  --primary: 139 92% 45%;
+  /* Green for Stripe-like */
+}
+
+/* Tenant branding */
+.tenant-acme {
+  --primary: 0 84% 60%;
+  --primary-foreground: 0 0% 100%;
+}
+
+.tenant-stripe {
+  --primary: 139 92% 45%;
+  --primary-foreground: 0 0% 100%;
+}
+
+/* Table improvements */
+table th {
+  color: hsl(var(--foreground));
+  font-weight: 600;
+}
+
+table td {
+  color: hsl(var(--foreground));
 }
