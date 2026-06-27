@@ -12,13 +12,27 @@ export default function Dashboard() {
   const { data: tenant } = useGetTenantQuery(tenantId);
   const { data: transactions = [], isLoading, error } = useGetTransactionsQuery(tenantId);
 
-  // Dynamic tenant theming
+//   // Dynamic tenant theming
+//   useEffect(() => {
+//     if (tenant?.themeColor) {
+//       document.documentElement.style.setProperty('--primary', tenant.themeColor);
+//     }
+//     document.documentElement.classList.remove("tenant-alpha", "tenant-beta");
+//     document.documentElement.classList.add(`tenant-${tenantId}`);
+//   }, [tenantId, tenant]);
+
+      // Dynamic tenant theming
   useEffect(() => {
+    const root = document.documentElement;
+    
+    // Remove previous tenant classes
+    root.classList.remove("tenant-alpha", "tenant-beta");
+    root.classList.add(`tenant-${tenantId}`);
+    
+    // Force Tailwind to re-evaluate
     if (tenant?.themeColor) {
-      document.documentElement.style.setProperty('--primary', tenant.themeColor);
+      root.style.setProperty('--primary', tenant.themeColor);
     }
-    document.documentElement.classList.remove("tenant-alpha", "tenant-beta");
-    document.documentElement.classList.add(`tenant-${tenantId}`);
   }, [tenantId, tenant]);
 
   return (
