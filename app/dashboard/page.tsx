@@ -1,10 +1,11 @@
+
+
 // "use client";
 
 // import { useState, useEffect } from "react";
 // import { useGetTenantQuery, useGetTransactionsQuery } from "@/store/ledgerApi";
 // import LedgerTable from "@/components/ledger/LedgerTable";
 // import TenantSelector from "@/components/TenantSelector";
-// import ThemeToggle from "@/components/ThemeToggle";
 
 // export default function Dashboard() {
 //   const [tenantId, setTenantId] = useState<"alpha" | "beta">("alpha");
@@ -12,6 +13,7 @@
 //   const { data: tenant } = useGetTenantQuery(tenantId);
 //   const { data: transactions = [], isLoading, error } = useGetTransactionsQuery(tenantId);
 
+//   // Tenant theming only
 //   useEffect(() => {
 //     const root = document.documentElement;
 //     root.classList.remove("tenant-alpha", "tenant-beta");
@@ -28,10 +30,7 @@
 //             <p className="text-xl text-muted-foreground mt-2">{tenant?.businessName}</p>
 //           </div>
 
-//           <div className="flex items-center gap-4">
-//             <TenantSelector tenantId={tenantId} onChange={(id) => setTenantId(id as "alpha" | "beta")} />
-//             <ThemeToggle />
-//           </div>
+//           <TenantSelector tenantId={tenantId} onChange={(id) => setTenantId(id as "alpha" | "beta")} />
 //         </div>
 
 //         {/* KPI Cards */}
@@ -55,8 +54,7 @@
 //         </div>
 
 //         {/* Ledger Table */}
-      
-//         <div className="dashboard-card">
+//         <div className="dashboard-card p-0 overflow-hidden">
 //           <LedgerTable 
 //             transactions={transactions} 
 //             isLoading={isLoading} 
@@ -72,17 +70,30 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 import { useGetTenantQuery, useGetTransactionsQuery } from "@/store/ledgerApi";
 import LedgerTable from "@/components/ledger/LedgerTable";
 import TenantSelector from "@/components/TenantSelector";
 
 export default function Dashboard() {
-  const [tenantId, setTenantId] = useState<"alpha" | "beta">("alpha");
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  // Read tenant from URL query param, fallback to "alpha"
+  const urlTenant = (searchParams.get("tenant") as "alpha" | "beta") || "alpha";
+  const [tenantId, setTenantId] = useState<"alpha" | "beta">(urlTenant);
 
   const { data: tenant } = useGetTenantQuery(tenantId);
   const { data: transactions = [], isLoading, error } = useGetTransactionsQuery(tenantId);
 
-  // Tenant theming only
+  // Sync URL when tenant changes (new implementation)
+  useEffect(() => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("tenant", tenantId);
+    router.push(`/dashboard?${params.toString()}`, { scroll: false });
+  }, [tenantId, router, searchParams]);
+
+  // Tenant theming only (unchanged)
   useEffect(() => {
     const root = document.documentElement;
     root.classList.remove("tenant-alpha", "tenant-beta");

@@ -1,35 +1,3 @@
-/*
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-
-export interface LedgerTransaction {
-  id: string;
-  date: string;
-  fromCurrency: string;
-  toCurrency: string;
-  fromAmount: number;
-  toAmount: number;
-  fee: number;
-  status: "completed" | "pending" | "failed";
-  counterparty: string;
-}
-
-export const ledgerApi = createApi({
-  reducerPath: "ledgerApi",
-  baseQuery: fetchBaseQuery({ baseUrl: "/api" }),
-  endpoints: (builder) => ({
-    getLedger: builder.query<LedgerTransaction[], { tenant: string }>({
-      query: ({ tenant }) => `/ledger?tenant=${tenant}`,
-      // Simulate different data per tenant
-      transformResponse: (response: LedgerTransaction[], meta, arg) => {
-        return response;
-      },
-    }),
-  }),
-});
-
-export const { useGetLedgerQuery } = ledgerApi;
-*/
-
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { mockLedgerData } from "@/lib/mockLedgerData";
 
